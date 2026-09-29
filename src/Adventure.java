@@ -57,5 +57,11 @@ public class Adventure {
         return player.getHealth();
     }
 
+    // Beder spilleren om at spise en ting og sender udfaldet videre
+    public EatResult eat (String shortName){
+        return player.eat(shortName);
+    }
+
+
 }
 
