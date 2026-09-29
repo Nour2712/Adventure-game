@@ -71,7 +71,7 @@ public class UserInterface { // Userinterface står for al kommunikation med bru
                     IO.println("take <item> = pick up an item, for example 'take lamp'");
                     IO.println("drop <item> = leave an item in the room, for example 'drop lamp'");
                     IO.println("inventory (or inv) = show what you are carrying");
-                    IO.println("healt = show your current health");
+                    IO.println("health = show your current health");
                     IO.println("exit = quit the game ");
 
                 }

@@ -120,9 +120,9 @@ public class Player {
         return item;
     }
 
-
-
-
-
+    // Returnerer spillerens nuværende health.
+    public int getHealth() {
+        return health;
+    }
 
 }

@@ -52,5 +52,10 @@ public class Adventure {
 
     }
 
+    // Beder spilleren om sin health og sender den videre.
+    public int getHealth() {
+        return player.getHealth();
+    }
+
 }
 
