@@ -3,7 +3,6 @@ import java.util.ArrayList;
 public class Player {
 
 
-
     // Det rum spilleren står i lige nu
     // Feltet er private, så kun Player selv kan ændre det (indkapsling).
     private Room currentRoom;
@@ -124,5 +123,39 @@ public class Player {
     public int getHealth() {
         return health;
     }
+
+    // Spiser en ting, hvis den findes i inventory eller i rummet, og hvis den er mad.
+    // Returnerer et af tre udfald: NOT_FOUND, NOT_FOOD eller EATEN.
+    public EatResult eat(String shortName) {
+        //led først i inevntory og derefter i rummet:
+        Item item = findItem(shortName);
+        if (item == null) {
+            item = currentRoom.findItem(shortName);
+        }
+
+        //udfald 1: item findes ikke
+        if (item == null){
+            return EatResult.NOT_FOUND;
+        }
+
+        //udfald 2: item findes, men er ikke mad:
+        if (!(item instanceof Food)){
+            return EatResult.NOT_FOOD;
+        }
+
+        //udfald 3: item er mad og bliver spist:
+        Food food = (Food) item;
+        health = health + food.getHealthPoints();
+
+
+        //Fjern maden så den ikke spises igen:
+        //Den ligger kun et af stederne, og remove gør ingenting, hvis den ikke er i listen
+        inventory.remove(food);
+        currentRoom.removeItem(food);
+
+        return EatResult.EATEN;
+
+    }
+
 
 }

@@ -54,13 +54,11 @@ public class UserInterface { // Userinterface står for al kommunikation med bru
                         IO.println("health: " + health + " - you are in perfect health");
                     } else if (health >= 50) {
                         IO.println("health: " + health + " - you are in good health, but avoid fighting right now");
-
                     } else if (health >= 25) {
                         IO.println("health: " + health + " - you are hurt, be careful");
                     } else {
                         IO.println("health: " + health + " - you are in critical condition");
                     }
-
                 }
 
 
@@ -70,10 +68,11 @@ public class UserInterface { // Userinterface står for al kommunikation med bru
                     IO.println("look = information about your current whereabouts");
                     IO.println("take <item> = pick up an item, for example 'take lamp'");
                     IO.println("drop <item> = leave an item in the room, for example 'drop lamp'");
+                    IO.println("eat <item> = eat some food, for example 'eat bread'");
                     IO.println("inventory (or inv) = show what you are carrying");
                     IO.println("health = show your current health");
+                    IO.println("eat <item> = eat some food, for example 'eat bread'");
                     IO.println("exit = quit the game ");
-
                 }
 
                 // Her oversættes både "n" og "north" til goNorth()
@@ -109,9 +108,9 @@ public class UserInterface { // Userinterface står for al kommunikation med bru
                     }
                 }
 
-                // "Take" kan ikke være en almindelig case, fordi teksten er forskellig
-                // hver gang (take lamp, take sword...). Derfor tjekker vi med startsWith,
-                // og substring(5) klipper "take" af, så vi har navnet på tingen tilbage.
+                // "take", "drop" og "eat" kan ikke være almindelige cases, fordi teksten er forskellig
+                // hver gang (take lamp, eat bread...). Derfor tjekker vi med startsWith,
+                // og substring klipper kommandoen af, så vi har navnet på tingen tilbage.
                 default -> {
                     if (kommando.startsWith("take ")) {
                         String itemName = kommando.substring(5);
@@ -131,16 +130,34 @@ public class UserInterface { // Userinterface står for al kommunikation med bru
                         } else {
                             IO.println("You don't have anything like " + itemName + " in your inventory");
                         }
+                    } else if (kommando.startsWith("eat ")) {
+                        String itemName = kommando.substring(4);
+
+                        // Gem health før, så vi kan se, om maden var sund eller giftig
+                        int healthBefore = adventure.getHealth();
+                        EatResult result = adventure.eat(itemName);
+
+                        // eat har tre mulige udfald. En boolean kan kun være true/false,
+                        // derfor bruger vi en enum, og switch vælger beskeden ud fra udfaldet.
+                        switch (result) {
+                            case NOT_FOUND -> IO.println("There is nothing like " + itemName + " to eat around here");
+                            case NOT_FOOD -> IO.println("You cannot eat the " + itemName);
+                            case EATEN -> {
+                                if (adventure.getHealth() > healthBefore) {
+                                    IO.println("You eat the " + itemName + ". You feel a little better.");
+                                } else {
+                                    IO.println("You eat the " + itemName + ". That was a mistake.");
+                                }
+                            }
+                        }
                     }
                 }
-
-
             }
         }
     }
-
-
 }
+
+
 
 
 
