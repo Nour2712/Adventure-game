@@ -56,8 +56,8 @@ public class Map {  // Single Responsibility Principle: klassen har kun ét ansv
 
 
         // Items i rummene
-        // Room 1 har 2 ting, Room 2 har 1 ting, Room 5 har 3 ting.
-        // De andre rum har ingen ting (så vi kan teste alle tilfælde: 0, 1, 2 og 3)
+        // Sammen med maden nedenfor har rummene 0, 1, 2 eller 3 ting,
+        // så vi kan teste alle tilfælde (fx Room 3 = 0, Room 2 = 1, Room 1 = 2, Room 5 = 3).
         room1.addItem(new Item("lamp", "a shiny brass lamp"));
         room1.addItem(new Item("coins", "some gold coins"));
 
@@ -66,6 +66,16 @@ public class Map {  // Single Responsibility Principle: klassen har kun ét ansv
         room5.addItem(new Item("key", "a small golden key"));
         room5.addItem(new Item("map", "an old torn map"));
         room5.addItem(new Item("torch", "a burning torch"));
+
+
+        // Mad i rummene: positive healthPoints er sund mad, negative er giftig mad.
+        // Food-objekter kan lægges i rummenes liste af Item, fordi et Food også er et Item.
+        // Derfor virker take, drop og inventory også for mad, uden at koden er ændret.
+        room7.addItem(new Food("bread", "a loaf of stale bread", 10));
+        room4.addItem(new Food("mushroom", "a pale glowing mushroom", -50));
+        room6.addItem(new Food("apple", "a shiny red apple", 20));
+        room8.addItem(new Food("berries", "a handful of dark purple berries", -20));
+        room9.addItem(new Food("cake", "a slice of chocolate cake", 30));
 
 
         // Spilleren starter i rum 1
