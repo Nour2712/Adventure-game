@@ -46,14 +46,34 @@ public class UserInterface { // Userinterface står for al kommunikation med bru
                     }
                 }
 
+                //Viser spilleren health som tal og en forklarende tekst.
+                //Den høje grænse står først, fordi java stopper ved den første betingelse, som passer:
+                case "health" -> {
+                    int health = adventure.getHealth();
+                    if (health >= 100) {
+                        IO.println("health: " + health + " - you are in perfect health");
+                    } else if (health >= 50) {
+                        IO.println("health: " + health + " - you are in good health, but avoid fighting right now");
+
+                    } else if (health >= 25) {
+                        IO.println("health: " + health + " - you are hurt, be careful");
+                    } else {
+                        IO.println("health: " + health + " - you are in critical condition");
+                    }
+
+                }
+
+
                 case "help" -> {
                     IO.println("To move in a direction you have 4 options:");
                     IO.println("n or north" + ", e or east" + ", s or south" + ", w or west");
                     IO.println("look = information about your current whereabouts");
                     IO.println("take <item> = pick up an item, for example 'take lamp'");
-                    IO.println("inventory (or inv) = show what you are carrying");
-                    IO.println("exit = quit the game ");
                     IO.println("drop <item> = leave an item in the room, for example 'drop lamp'");
+                    IO.println("inventory (or inv) = show what you are carrying");
+                    IO.println("health = show your current health");
+                    IO.println("exit = quit the game ");
+
                 }
 
                 // Her oversættes både "n" og "north" til goNorth()
@@ -103,22 +123,24 @@ public class UserInterface { // Userinterface står for al kommunikation med bru
                             IO.println("There is nothing like " + itemName + " to take around here");
                         }
                     } else if (kommando.startsWith("drop ")) {
-                    String itemName = kommando.substring(5);
-                    Item item = adventure.dropItem(itemName);
+                        String itemName = kommando.substring(5);
+                        Item item = adventure.dropItem(itemName);
 
-                    if (item != null) {
-                        IO.println("You have dropped " + item.getLongName());
-                    } else {
-                        IO.println("You don't have anything like " + itemName + " in your inventory");
+                        if (item != null) {
+                            IO.println("You have dropped " + item.getLongName());
+                        } else {
+                            IO.println("You don't have anything like " + itemName + " in your inventory");
+                        }
                     }
                 }
-            }
 
 
-                }
             }
         }
     }
+
+
+}
 
 
 
