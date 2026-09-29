@@ -3,6 +3,7 @@ import java.util.ArrayList;
 public class Player {
 
 
+
     // Det rum spilleren står i lige nu
     // Feltet er private, så kun Player selv kan ændre det (indkapsling).
     private Room currentRoom;
@@ -10,6 +11,10 @@ public class Player {
 
     // Spillerens inventory: de ting, spilleren bærer rundt på.
     private final ArrayList<Item> inventory = new ArrayList<>();
+
+    //Spillerens helbred starter på 100
+    // (Ligesom i et normalt spil hvor man kan "miste liv/point" det samme princip gælder her:
+    private int health = 100;
 
 
     // Konstruktør: spilleren får sit startrum med, når den bliver oprettet.
@@ -114,6 +119,9 @@ public class Player {
         }
         return item;
     }
+
+
+
 
 
 
