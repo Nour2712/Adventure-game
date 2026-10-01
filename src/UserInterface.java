@@ -71,7 +71,6 @@ public class UserInterface { // Userinterface står for al kommunikation med bru
                     IO.println("eat <item> = eat some food, for example 'eat bread'");
                     IO.println("inventory (or inv) = show what you are carrying");
                     IO.println("health = show your current health");
-                    IO.println("eat <item> = eat some food, for example 'eat bread'");
                     IO.println("exit = quit the game ");
                 }
 
@@ -133,6 +132,9 @@ public class UserInterface { // Userinterface står for al kommunikation med bru
                     } else if (kommando.startsWith("eat ")) {
                         String itemName = kommando.substring(4);
 
+                        // Find tingen før den bliver spist, så vi kan skrive dens lange navn bagefter
+                        Item item = adventure.findItemAnywhere(itemName);
+
                         // Gem health før, så vi kan se, om maden var sund eller giftig
                         int healthBefore = adventure.getHealth();
                         EatResult result = adventure.eat(itemName);
@@ -141,12 +143,12 @@ public class UserInterface { // Userinterface står for al kommunikation med bru
                         // derfor bruger vi en enum, og switch vælger beskeden ud fra udfaldet.
                         switch (result) {
                             case NOT_FOUND -> IO.println("There is nothing like " + itemName + " to eat around here");
-                            case NOT_FOOD -> IO.println("You cannot eat the " + itemName);
+                            case NOT_FOOD -> IO.println("You cannot eat " + item.getLongName());
                             case EATEN -> {
                                 if (adventure.getHealth() > healthBefore) {
-                                    IO.println("You eat the " + itemName + ". You feel a little better.");
+                                    IO.println("You eat " + item.getLongName() + ". You feel a little better.");
                                 } else {
-                                    IO.println("You eat the " + itemName + ". That was a mistake.");
+                                    IO.println("You eat " + item.getLongName() + ". That was a mistake.");
                                 }
                             }
                         }
