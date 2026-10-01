@@ -107,6 +107,16 @@ public class Player {
         return null;
     }
 
+    // Leder efter en ting først i inventory og derefter i rummet.
+    // Returnerer tingen, hvis den findes et af stederne, ellers null.
+    public Item findItemAnywhere(String shortName) {
+        Item item = findItem(shortName);
+        if (item == null) {
+            item = currentRoom.findItem(shortName);
+        }
+        return item;
+    }
+
     // Tager en ting fra spillerens inventory og lægger den i rummet.
     // Returnerer tingen, hvis den fandtes, ellers null.
     public Item dropItem(String shortName) {
@@ -127,19 +137,15 @@ public class Player {
     // Spiser en ting, hvis den findes i inventory eller i rummet, og hvis den er mad.
     // Returnerer et af tre udfald: NOT_FOUND, NOT_FOOD eller EATEN.
     public EatResult eat(String shortName) {
-        //led først i inevntory og derefter i rummet:
-        Item item = findItem(shortName);
-        if (item == null) {
-            item = currentRoom.findItem(shortName);
-        }
+        Item item = findItemAnywhere(shortName);
 
         //udfald 1: item findes ikke
-        if (item == null){
+        if (item == null) {
             return EatResult.NOT_FOUND;
         }
 
         //udfald 2: item findes, men er ikke mad:
-        if (!(item instanceof Food)){
+        if (!(item instanceof Food)) {
             return EatResult.NOT_FOOD;
         }
 

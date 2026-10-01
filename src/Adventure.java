@@ -57,6 +57,11 @@ public class Adventure {
         return player.getHealth();
     }
 
+    // Beder spilleren om at finde en ting i inventory eller i rummet.
+    public Item findItemAnywhere(String shortName) {
+        return player.findItemAnywhere(shortName);
+    }
+
     // Beder spilleren om at spise en ting og sender udfaldet videre
     public EatResult eat (String shortName){
         return player.eat(shortName);
