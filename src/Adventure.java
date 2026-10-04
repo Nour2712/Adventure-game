@@ -68,5 +68,16 @@ public class Adventure {
     }
 
 
+    // Beder spilleren om at equippe et våben og sender udfaldet videre.
+    public EquipResult equip (String shortName){
+        return player.equip(shortName);
+
+    }
+
+    // Beder spilleren om det equippede våben og sender det videre.
+    public Weapon getEquippedWeapon(){
+        return player.getEquippedWeapon();
+    }
+
 }
 

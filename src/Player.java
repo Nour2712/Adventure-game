@@ -16,6 +16,10 @@ public class Player {
     private int health = 100;
 
 
+    // Det våben spilleren har equipped lige nu. null betyder, at der ikke er noget våben equipped.
+    // Feltet har typen Weapon - Player kender kun superklassen, ikke MeleeWeapon eller RangedWeapon.
+    private Weapon equippedWeapon;
+
     // Konstruktør: spilleren får sit startrum med, når den bliver oprettet.
     // Player ved ikke selv, hvilket rum der er startrummet - det bestemmer Map
     public Player(Room startRoom) {
@@ -125,6 +129,11 @@ public class Player {
         if (item != null) {
             inventory.remove(item);
             currentRoom.addItem(item);
+
+            // Dropper man det våben, man har equipped, har man ikke længere noget equipped.
+            if (item == equippedWeapon) {
+                equippedWeapon = null;
+            }
         }
         return item;
     }
@@ -161,6 +170,35 @@ public class Player {
 
         return EatResult.EATEN;
 
+    }
+
+    //equip-metoden
+    // Equipper et våben fra spillerens inventory.
+    // Returnerer et af tre udfald: NOT_FOUND, NOT_WEAPON eller EQUIPPED.
+    public EquipResult equip(String shortName) {
+
+        // Kun inventory - man kan ikke equippe noget, der ligger i rummet.
+        Item item = findItem(shortName);
+
+        // Udfald 1: tingen findes ikke i inventory
+        if (item == null) {
+            return EquipResult.NOT_FOUND;
+        }
+
+        // Udfald 2: tingen findes, men er ikke et våben
+        if (!(item instanceof Weapon)) {
+            return EquipResult.NOT_WEAPON;
+        }
+
+        // Udfald 3: tingen er et våben og bliver equipped
+        equippedWeapon = (Weapon) item;
+        return EquipResult.EQUIPPED;
+
+    }
+
+    // Returnerer det våben spilleren har equipped, eller null hvis der ikke er noget.
+    public Weapon getEquippedWeapon() {
+        return equippedWeapon;
     }
 
 

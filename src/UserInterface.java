@@ -44,7 +44,12 @@ public class UserInterface { // Userinterface står for al kommunikation med bru
                             IO.println("- " + item.getLongName());
                         }
                     }
+                    // Vis det equippede våben, hvis der er et
+                    if (adventure.getEquippedWeapon() != null) {
+                        IO.println("Equipped: " + adventure.getEquippedWeapon().getLongName());
+                    }
                 }
+
 
                 //Viser spilleren health som tal og en forklarende tekst.
                 //Den høje grænse står først, fordi java stopper ved den første betingelse, som passer:
@@ -62,7 +67,6 @@ public class UserInterface { // Userinterface står for al kommunikation med bru
                 }
 
 
-
                 case "help" -> {
                     IO.println("To move in a direction you have 4 options:");
                     IO.println("n or north" + ", e or east" + ", s or south" + ", w or west");
@@ -70,6 +74,7 @@ public class UserInterface { // Userinterface står for al kommunikation med bru
                     IO.println("take <item> = pick up an item, for example 'take lamp'");
                     IO.println("drop <item> = leave an item in the room, for example 'drop lamp'");
                     IO.println("eat <item> = eat some food, for example 'eat bread'");
+                    IO.println("equip <weapon> = get a weapon from your inventory ready to use");
                     IO.println("inventory (or inv) = show what you are carrying");
                     IO.println("health = show your current health");
                     IO.println("exit = quit the game ");
@@ -108,7 +113,7 @@ public class UserInterface { // Userinterface står for al kommunikation med bru
                     }
                 }
 
-                // "take", "drop" og "eat" kan ikke være almindelige cases, fordi teksten er forskellig
+                // "take", "drop", "eat" og "equip" kan ikke være almindelige cases, fordi teksten er forskellig
                 // hver gang (take lamp, eat bread...). Derfor tjekker vi med startsWith,
                 // og substring klipper kommandoen af, så vi har navnet på tingen tilbage.
                 default -> {
@@ -153,7 +158,23 @@ public class UserInterface { // Userinterface står for al kommunikation med bru
                                 }
                             }
                         }
+                    } else if (kommando.startsWith("equip ")) {
+                        String itemName = kommando.substring(6);
+
+                        // Find Item først, så vi kan skrive dens lange navn i beskeden
+                        Item item = adventure.findItemAnywhere(itemName);
+                        EquipResult result = adventure.equip(itemName);
+
+                        // equip har tre mulige udfald, ligesom eat.
+                        switch (result) {
+                            case NOT_FOUND ->
+                                    IO.println("You don't have anything like " + itemName + " in your inventory");
+                            case NOT_WEAPON ->
+                                    IO.println("You cannot equip " + item.getLongName() + ", it is not a weapon");
+                            case EQUIPPED -> IO.println("You have equipped " + item.getLongName());
+                        }
                     }
+
                 }
             }
         }
