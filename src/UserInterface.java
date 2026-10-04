@@ -62,6 +62,7 @@ public class UserInterface { // Userinterface står for al kommunikation med bru
                 }
 
 
+
                 case "help" -> {
                     IO.println("To move in a direction you have 4 options:");
                     IO.println("n or north" + ", e or east" + ", s or south" + ", w or west");
