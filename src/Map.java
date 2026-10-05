@@ -3,7 +3,7 @@ public class Map {  // Single Responsibility Principle: klassen har kun ét ansv
     // Det rum spilleren starter i.
     private final Room startRoom;
 
-    // Konstruktør: opretter de 9 rum, forbinder dem og lægger items i nogle af dem.
+    // Konstruktør: opretter de 9 rum, forbinder dem og lægger items & fjender i nogle af dem.
     public Map() {
         Room room1 = new Room("Room 1", "A plain room with only two doors ");
         Room room2 = new Room("Room 2", "An ordinary room with two doors ");
@@ -84,6 +84,17 @@ public class Map {  // Single Responsibility Principle: klassen har kun ét ansv
         room6.addItem(new MeleeWeapon("axe", "a heavy axe", 18));
         room8.addItem(new RangedWeapon("revolver", "an old revolver", 20, 6));
         room9.addItem(new RangedWeapon("bow", "a wooden bow", 15, 2));
+
+        // Fjender i rummene. Hver fjende får sit eget våben og ved, hvilket rum den står i.
+        // Fjendens våben ligger ikke i rummet - det bliver først droppet, når fjenden dør.
+        Weapon stick = new MeleeWeapon("stick", "a wooden stick", 5);
+        Enemy rat = new Enemy("rat", "a big rat", "A big hungry rat", 20, stick, room5);
+        room5.addEnemy(rat);
+
+        Weapon knife = new MeleeWeapon("knife", "a small knife", 10);
+        Enemy goblin = new Enemy("goblin", "an angry goblin", "A small angry goblin", 40, knife, room9);
+        room9.addEnemy(goblin);
+
 
         // Spilleren starter i rum 1
         startRoom = room1;
