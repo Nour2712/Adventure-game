@@ -9,8 +9,8 @@ public class RangedWeapon extends Weapon {
 
     // Konstruktør: navnene sendes videre til Weapon med super(...),
     // og ammunition er RangedWeapons eget ekstra felt (ligesom healthPoints i Food).
-    public RangedWeapon(String shortName, String longName, int ammunition) {
-        super(shortName, longName);
+    public RangedWeapon(String shortName, String longName, int damage, int ammunition) {
+        super(shortName, longName, damage);
         this.ammunition = ammunition;
 
     }

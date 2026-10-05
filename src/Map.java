@@ -80,10 +80,10 @@ public class Map {  // Single Responsibility Principle: klassen har kun ét ansv
 
         //Tilføjer våben i rummene: MeleeWeapon kan bruges uendeligt, RangeWeapon har begrænset ammunition
         // Det er kun her i Map, at subklasserne nævnes. Alle andre steder kender koden kun Weapon.
-        room2.addItem(new MeleeWeapon("sword", "a rusty sword"));
-        room6.addItem(new MeleeWeapon("axe", "a heavy axe"));
-        room8.addItem(new RangedWeapon("revolver", "an old revolver", 6));
-        room9.addItem(new RangedWeapon("bow", "a wooden bow", 2));
+        room2.addItem(new MeleeWeapon("sword", "a rusty sword", 12));
+        room6.addItem(new MeleeWeapon("axe", "a heavy axe", 18));
+        room8.addItem(new RangedWeapon("revolver", "an old revolver", 20, 6));
+        room9.addItem(new RangedWeapon("bow", "a wooden bow", 15, 2));
 
         // Spilleren starter i rum 1
         startRoom = room1;

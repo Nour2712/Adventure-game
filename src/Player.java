@@ -194,6 +194,7 @@ public class Player {
         equippedWeapon = (Weapon) item;
         return EquipResult.EQUIPPED;
 
+
     }
 
     // Returnerer det våben spilleren har equipped, eller null hvis der ikke er noget.
