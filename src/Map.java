@@ -56,12 +56,12 @@ public class Map {  // Single Responsibility Principle: klassen har kun ét ansv
 
 
         // Items i rummene
-        // Sammen med maden nedenfor har rummene 0, 1, 2 eller 3 ting,
+        // Almindelige ting i rummene.
+        // Sammen med maden og våbnene nedenfor har rummene 0, 1, 2 eller 3 ting,
         // så vi kan teste alle tilfælde (fx Room 3 = 0, Room 2 = 1, Room 1 = 2, Room 5 = 3).
         room1.addItem(new Item("lamp", "a shiny brass lamp"));
         room1.addItem(new Item("coins", "some gold coins"));
 
-        room2.addItem(new Item("sword", "a rusty sword"));
 
         room5.addItem(new Item("key", "a small golden key"));
         room5.addItem(new Item("map", "an old torn map"));
@@ -77,6 +77,13 @@ public class Map {  // Single Responsibility Principle: klassen har kun ét ansv
         room8.addItem(new Food("berries", "a handful of dark purple berries", -20));
         room9.addItem(new Food("cake", "a slice of chocolate cake", 30));
 
+
+        //Tilføjer våben i rummene: MeleeWeapon kan bruges uendeligt, RangeWeapon har begrænset ammunition
+        // Det er kun her i Map, at subklasserne nævnes. Alle andre steder kender koden kun Weapon.
+        room2.addItem(new MeleeWeapon("sword", "a rusty sword"));
+        room6.addItem(new MeleeWeapon("axe", "a heavy axe"));
+        room8.addItem(new RangedWeapon("revolver", "an old revolver", 6));
+        room9.addItem(new RangedWeapon("bow", "a wooden bow", 2));
 
         // Spilleren starter i rum 1
         startRoom = room1;

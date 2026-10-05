@@ -16,6 +16,10 @@ public class Player {
     private int health = 100;
 
 
+    // Det våben spilleren har equipped lige nu. null betyder, at der ikke er noget våben equipped.
+    // Feltet har typen Weapon - Player kender kun superklassen, ikke MeleeWeapon eller RangedWeapon.
+    private Weapon equippedWeapon;
+
     // Konstruktør: spilleren får sit startrum med, når den bliver oprettet.
     // Player ved ikke selv, hvilket rum der er startrummet - det bestemmer Map
     public Player(Room startRoom) {
@@ -107,6 +111,16 @@ public class Player {
         return null;
     }
 
+    // Leder efter en ting først i inventory og derefter i rummet.
+    // Returnerer tingen, hvis den findes et af stederne, ellers null.
+    public Item findItemAnywhere(String shortName) {
+        Item item = findItem(shortName);
+        if (item == null) {
+            item = currentRoom.findItem(shortName);
+        }
+        return item;
+    }
+
     // Tager en ting fra spillerens inventory og lægger den i rummet.
     // Returnerer tingen, hvis den fandtes, ellers null.
     public Item dropItem(String shortName) {
@@ -115,6 +129,11 @@ public class Player {
         if (item != null) {
             inventory.remove(item);
             currentRoom.addItem(item);
+
+            // Dropper man det våben, man har equipped, har man ikke længere noget equipped.
+            if (item == equippedWeapon) {
+                equippedWeapon = null;
+            }
         }
         return item;
     }
@@ -127,19 +146,15 @@ public class Player {
     // Spiser en ting, hvis den findes i inventory eller i rummet, og hvis den er mad.
     // Returnerer et af tre udfald: NOT_FOUND, NOT_FOOD eller EATEN.
     public EatResult eat(String shortName) {
-        //led først i inevntory og derefter i rummet:
-        Item item = findItem(shortName);
-        if (item == null) {
-            item = currentRoom.findItem(shortName);
-        }
+        Item item = findItemAnywhere(shortName);
 
         //udfald 1: item findes ikke
-        if (item == null){
+        if (item == null) {
             return EatResult.NOT_FOUND;
         }
 
         //udfald 2: item findes, men er ikke mad:
-        if (!(item instanceof Food)){
+        if (!(item instanceof Food)) {
             return EatResult.NOT_FOOD;
         }
 
@@ -154,6 +169,58 @@ public class Player {
         currentRoom.removeItem(food);
 
         return EatResult.EATEN;
+
+    }
+
+    //equip-metoden
+    // Equipper et våben fra spillerens inventory.
+    // Returnerer et af tre udfald: NOT_FOUND, NOT_WEAPON eller EQUIPPED.
+    public EquipResult equip(String shortName) {
+
+        // Kun inventory - man kan ikke equippe noget, der ligger i rummet.
+        Item item = findItem(shortName);
+
+        // Udfald 1: tingen findes ikke i inventory
+        if (item == null) {
+            return EquipResult.NOT_FOUND;
+        }
+
+        // Udfald 2: tingen findes, men er ikke et våben
+        if (!(item instanceof Weapon)) {
+            return EquipResult.NOT_WEAPON;
+        }
+
+        // Udfald 3: tingen er et våben og bliver equipped
+        equippedWeapon = (Weapon) item;
+        return EquipResult.EQUIPPED;
+
+    }
+
+    // Returnerer det våben spilleren har equipped, eller null hvis der ikke er noget.
+    public Weapon getEquippedWeapon() {
+        return equippedWeapon;
+    }
+
+
+    // Bruger det equippede våben mod den tomme luft.
+    // Returnerer et af tre udfald: NO_WEAPON, NO_AMMO eller ATTACKED.
+    public AttackResult attack() {
+
+        // Udfald 1: intet våben equipped -> NO_WEAPON
+        if (equippedWeapon == null) {
+            return AttackResult.NO_WEAPON;
+        }
+
+        // Udfald 2: våbnet kan ikke bruges -> NO_AMMO
+        if (!equippedWeapon.canUse()) {
+            return AttackResult.NO_AMMO;
+        }
+
+        // Udfald 3: brug våbnet.
+        // Player ved ikke, om det er et sværd eller en revolver - våbnet selv
+        // bestemmer, hvad use() gør (polymorfi).
+        equippedWeapon.use();
+        return AttackResult.ATTACKED;
 
     }
 

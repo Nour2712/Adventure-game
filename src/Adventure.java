@@ -57,11 +57,33 @@ public class Adventure {
         return player.getHealth();
     }
 
+    // Beder spilleren om at finde en ting i inventory eller i rummet.
+    public Item findItemAnywhere(String shortName) {
+        return player.findItemAnywhere(shortName);
+    }
+
     // Beder spilleren om at spise en ting og sender udfaldet videre
     public EatResult eat (String shortName){
         return player.eat(shortName);
     }
 
+
+    // Beder spilleren om at equippe et våben og sender udfaldet videre.
+    public EquipResult equip (String shortName){
+        return player.equip(shortName);
+
+    }
+
+    // Beder spilleren om det equippede våben og sender det videre.
+    public Weapon getEquippedWeapon(){
+        return player.getEquippedWeapon();
+    }
+
+    // Beder spilleren om at angribe og sender udfaldet videre.
+    public AttackResult attack(){
+        return player.attack();
+
+    }
 
 }
 
