@@ -202,4 +202,27 @@ public class Player {
     }
 
 
+    // Bruger det equippede våben mod den tomme luft.
+    // Returnerer et af tre udfald: NO_WEAPON, NO_AMMO eller ATTACKED.
+    public AttackResult attack() {
+
+        // Udfald 1: intet våben equipped -> NO_WEAPON
+        if (equippedWeapon == null) {
+            return AttackResult.NO_WEAPON;
+        }
+
+        // Udfald 2: våbnet kan ikke bruges -> NO_AMMO
+        if (!equippedWeapon.canUse()) {
+            return AttackResult.NO_AMMO;
+        }
+
+        // Udfald 3: brug våbnet.
+        // Player ved ikke, om det er et sværd eller en revolver - våbnet selv
+        // bestemmer, hvad use() gør (polymorfi).
+        equippedWeapon.use();
+        return AttackResult.ATTACKED;
+
+    }
+
+
 }

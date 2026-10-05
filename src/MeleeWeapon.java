@@ -21,5 +21,11 @@ public class MeleeWeapon extends Weapon {
         return -1;
     }
 
+    // Et nærkampsvåben kan altid bruges igen. -1 betyder "ubegrænset".
+    @Override
+    public int getUsesLeft(){
+        return -1;
+    }
+
 
 }

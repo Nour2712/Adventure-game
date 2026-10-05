@@ -29,4 +29,12 @@ public class RangedWeapon extends Weapon {
         return ammunition;
     }
 
+
+    // Returnerer hvor mange skud der er tilbage.
+    @Override
+    public int getUsesLeft() {
+        return ammunition;
+
+    }
+
 }

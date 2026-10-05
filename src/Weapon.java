@@ -17,4 +17,8 @@ public abstract class Weapon extends Item {
     public abstract int use();
 
 
+    // Returnerer hvor mange gange våbnet kan bruges endnu. -1 betyder ubegrænset.
+    public abstract int getUsesLeft();
+
+
 }

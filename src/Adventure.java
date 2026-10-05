@@ -79,5 +79,11 @@ public class Adventure {
         return player.getEquippedWeapon();
     }
 
+    // Beder spilleren om at angribe og sender udfaldet videre.
+    public AttackResult attack(){
+        return player.attack();
+
+    }
+
 }
 
