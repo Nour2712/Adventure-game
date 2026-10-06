@@ -157,6 +157,12 @@ public class Player {
         return health;
     }
 
+    // Spilleren bliver ramt og mister health svarende til damage.
+    public void hit(int damage) {
+        health = health - damage;
+    }
+
+
     // Spiser en ting, hvis den findes i inventory eller i rummet, og hvis den er mad.
     // Returnerer et af tre udfald: NOT_FOUND, NOT_FOOD eller EATEN.
     public EatResult eat(String shortName) {

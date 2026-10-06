@@ -42,6 +42,42 @@ public class Enemy {
     public int getHealth(){
         return health;
     }
+    // Returnerer fjendens våben
+    public Weapon getWeapon() {
+        return weapon;
+    }
+
+
+
+    //hit or die enemy
+    // Fjenden bliver ramt og mister health svarende til damage.
+    // Når health når 0 eller derunder, dør fjenden.
+    public void hit(int damage){
+        health = health - damage;
+
+        if (health <= 0) {
+            die();
+        }
+    }
+
+    // Fjenden dør: den dropper sit våben i rummet og forsvinder selv fra rummet.
+    private void die(){
+        currentRoom.addItem(weapon);
+        currentRoom.removeEnemy(this);
+    }
+
+
+    // Returnerer true, hvis fjenden er død
+    public boolean isDead(){
+        return health <= 0;
+    }
+
+    // Fjenden angriber spilleren med sit våben
+    public void attack(Player player){
+        player.hit(weapon.getDamage());
+    }
+
+
 
 
 
