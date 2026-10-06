@@ -54,7 +54,7 @@ public class Player {
 
     // Returnerer true, hvis der er fjender i det rum, spilleren står i.
     public boolean hasEnemies() {
-        return  !currentRoom.getEnemies().isEmpty();
+        return !currentRoom.getEnemies().isEmpty();
     }
 
 
@@ -223,26 +223,58 @@ public class Player {
     }
 
 
-    // Bruger det equippede våben mod den tomme luft.
-    // Returnerer et af tre udfald: NO_WEAPON, NO_AMMO eller ATTACKED.
-    public AttackResult attack() {
+    // Angriber en fjende i rummet, eller den tomme luft, hvis der ingen fjender er.
+    // Det er præcis det mit aktivitetsdiagram viser for attack-sekvensen:
+    public AttackResult attack(String enemyName) {
 
-        // Udfald 1: intet våben equipped -> NO_WEAPON
+        // Trin 1: intet våben equipped
         if (equippedWeapon == null) {
             return AttackResult.NO_WEAPON;
         }
 
-        // Udfald 2: våbnet kan ikke bruges -> NO_AMMO
+        // Trin 2: våbnet kan ikke bruges
         if (!equippedWeapon.canUse()) {
             return AttackResult.NO_AMMO;
         }
 
-        // Udfald 3: brug våbnet.
-        // Player ved ikke, om det er et sværd eller en revolver - våbnet selv
-        // bestemmer, hvad use() gør (polymorfi).
-        equippedWeapon.use();
-        return AttackResult.ATTACKED;
+        // Trin 3: find fjenden
+        Enemy target = findTarget(enemyName);
 
+        if (target == null) {
+            // Der er angivet et navn, men fjenden findes ikke. Der bruges ikke noget skud.
+            if (!enemyName.equals("")) {
+                return AttackResult.NO_SUCH_ENEMY;
+            }
+            // Ingen fjender i rummet: angrib luften
+            equippedWeapon.use();
+            return AttackResult.ATTACKED_AIR;
+        }
+
+        // Trin 4 og 5: brug våbnet, og fjenden mister health
+        equippedWeapon.use();
+        target.hit(equippedWeapon.getDamage());
+
+        // Trin 6: er fjenden død?
+        if (target.isDead()) {
+            return AttackResult.ENEMY_DIED;
+        }
+
+        // Trin 7: fjenden overlevede og slår igen
+        target.attack(this);
+        return AttackResult.ENEMY_HIT_BACK;
+    }
+
+    // Finder den fjende der skal angribes:
+    // hvis spilleren bare skriver "attack", vælges den første fjende i rummet eller (null, hvis rummet er tomt).
+    //hvis spilleren fx skriver "attack rat", så ledes der efter præcis den fjende (null, hvis den ikke er der).
+    public Enemy findTarget(String enemyName) {
+        if (enemyName.equals("")) {
+            if (currentRoom.getEnemies().isEmpty()) {
+                return null;
+            }
+            return currentRoom.getEnemies().get(0);
+        }
+        return currentRoom.findEnemy(enemyName);
     }
 
 

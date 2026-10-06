@@ -11,7 +11,7 @@ public class UserInterface { // Userinterface står for al kommunikation med bru
     }
 
 
-    // Starter spillet og kører, indtil brugeren skriver "exit".
+    // Starter spillet og kører, indtil brugeren skriver "exit", eller spilleren dør.
     public void start() {
 
         boolean playing = true;
@@ -22,7 +22,7 @@ public class UserInterface { // Userinterface står for al kommunikation med bru
         IO.println("You can traverse around the cave and use different commands, for example 'help'");
 
 
-        // Spil-løkken: læser en kommando, udfører den og starter forfra.
+        // Spil-løkken: dvs den læser en kommando, udfører den og starter forfra
         while (playing) {
             String kommando = IO.readln("> ");
 
@@ -44,7 +44,7 @@ public class UserInterface { // Userinterface står for al kommunikation med bru
                             IO.println("- " + item.getLongName());
                         }
                     }
-                    // Vis det equippede våben, hvis der er et
+                    // Vis det equippede våben hvis der er et
                     if (adventure.getEquippedWeapon() != null) {
                         IO.println("Equipped: " + adventure.getEquippedWeapon().getLongName());
                     }
@@ -67,27 +67,8 @@ public class UserInterface { // Userinterface står for al kommunikation med bru
                 }
 
 
-                // Bruger det equippede våben mod den tomme luft.
-                // UserInterface kender kun Weapon - ikke MeleeWeapon eller RangedWeapon.
-                case "attack" -> {
-                    AttackResult result = adventure.attack();
-
-                    switch (result) {
-                        case NO_WEAPON -> IO.println("You have no weapon equipped");
-                        case NO_AMMO -> IO.println("You try to use " + adventure.getEquippedWeapon().getLongName() + ", but it is out of ammunition");
-                        case ATTACKED -> {
-                            Weapon weapon = adventure.getEquippedWeapon();
-                            int usesLeft = weapon.getUsesLeft();
-
-                            // -1 betyder ubegrænset brug (nærkampsvåben), ellers er det skud tilbage.
-                            if (usesLeft == -1) {
-                                IO.println("You swing " + weapon.getLongName() + " at the empty air.");
-                            } else {
-                                IO.println("You fire " + weapon.getLongName() + " into the empty air. " + usesLeft + " shots left.");
-                            }
-                        }
-                    }
-                }
+                // "attack" uden navn angriber den første fjende i rummet (eller luften).
+                case "attack" -> attack("");
 
 
                 case "help" -> {
@@ -98,18 +79,18 @@ public class UserInterface { // Userinterface står for al kommunikation med bru
                     IO.println("drop <item> = leave an item in the room, for example 'drop lamp'");
                     IO.println("eat <item> = eat some food, for example 'eat bread'");
                     IO.println("equip <weapon> = get a weapon from your inventory ready to use");
-                    IO.println("attack = use your equipped weapon");
+                    IO.println("attack [enemy] = attack an enemy, or the first enemy in the room");
                     IO.println("inventory (or inv) = show what you are carrying");
                     IO.println("health = show your current health");
                     IO.println("exit = quit the game ");
                 }
 
-                // Her oversættes både "n" og "north" til goNorth()
-                // Metoderne returnerer true, hvis spilleren flyttede sig, ellers false.
+                // "n" og "north" oversættes til goNorth()
+                // Metoderne returnerer true, hvis spilleren flytter sig, ellers false.
                 case "n", "north" -> {
                     if (adventure.goNorth()) {
                         IO.println("You moved north");
-                        if(adventure.hasEnemies()){
+                        if (adventure.hasEnemies()) {
                             IO.println("Beware! There are enemies here.");
                         }
                     } else {
@@ -119,7 +100,7 @@ public class UserInterface { // Userinterface står for al kommunikation med bru
                 case "e", "east" -> {
                     if (adventure.goEast()) {
                         IO.println("You moved east");
-                        if(adventure.hasEnemies()){
+                        if (adventure.hasEnemies()) {
                             IO.println("Beware! There are enemies here.");
                         }
                     } else {
@@ -130,7 +111,7 @@ public class UserInterface { // Userinterface står for al kommunikation med bru
                 case "s", "south" -> {
                     if (adventure.goSouth()) {
                         IO.println("You moved south");
-                        if(adventure.hasEnemies()){
+                        if (adventure.hasEnemies()) {
                             IO.println("Beware! There are enemies here.");
                         }
                     } else {
@@ -141,7 +122,7 @@ public class UserInterface { // Userinterface står for al kommunikation med bru
                 case "w", "west" -> {
                     if (adventure.goWest()) {
                         IO.println("You moved west");
-                        if(adventure.hasEnemies()){
+                        if (adventure.hasEnemies()) {
                             IO.println("Beware! There are enemies here.");
                         }
                     } else {
@@ -149,9 +130,9 @@ public class UserInterface { // Userinterface står for al kommunikation med bru
                     }
                 }
 
-                // "take", "drop", "eat" og "equip" kan ikke være almindelige cases, fordi teksten er forskellig
-                // hver gang (take lamp, eat bread...). Derfor tjekker vi med startsWith,
-                // og substring klipper kommandoen af, så vi har navnet på tingen tilbage.
+                // "take", "drop", "eat", "equip" og "attack <fjende>" kan ikke være almindelige cases,
+                // fordi teksten er forskellig hver gang (take lamp, attack rat...). Derfor tjekker vi med startsWith,
+                // og substring klipper kommandoen af, så vi har navnet tilbage (jeg skal lige forstå denne del lidt bedre)
                 default -> {
                     if (kommando.startsWith("take ")) {
                         String itemName = kommando.substring(5);
@@ -174,10 +155,10 @@ public class UserInterface { // Userinterface står for al kommunikation med bru
                     } else if (kommando.startsWith("eat ")) {
                         String itemName = kommando.substring(4);
 
-                        // Find tingen før den bliver spist, så vi kan skrive dens lange navn bagefter
+                        // Find item før den bliver spist, så vi kan skrive dens lange navn bagefter
                         Item item = adventure.findItemAnywhere(itemName);
 
-                        // Gem health før, så vi kan se, om maden var sund eller giftig
+                        // Gem health før, så vi kan se om maden var sund eller giftig
                         int healthBefore = adventure.getHealth();
                         EatResult result = adventure.eat(itemName);
 
@@ -209,13 +190,54 @@ public class UserInterface { // Userinterface står for al kommunikation med bru
                                     IO.println("You cannot equip " + item.getLongName() + ", it is not a weapon");
                             case EQUIPPED -> IO.println("You have equipped " + item.getLongName());
                         }
+                    } else if (kommando.startsWith("attack ")) {
+                        // "attack " er 7 tegn, så substring(7) giver navnet på fjenden
+                        attack(kommando.substring(7));
                     }
                 }
+            }
+
+            // Efter hver kommando: er spilleren død? Det kan ske både i kamp og ved giftig mad.
+            if (adventure.getHealth() <= 0) {
+                IO.println("You have died. Game over!");
+                playing = false;
+            }
+        }
+    }
+
+
+    // Udfører attack og skriver beskederne. Bruges både af "attack" og "attack fjende",
+    // så man skal ikke  skrive den samme kode to gange.
+    // Metoden er private, fordi det kun er UserInterface som bruger den.
+    private void attack(String enemyName) {
+        // Find fjenden FØR angrebet - dør den, forsvinder den fra rummet, og så kan vi ikke finde den bagefter.
+        Enemy target = adventure.findTarget(enemyName);
+        AttackResult result = adventure.attack(enemyName);
+        Weapon weapon = adventure.getEquippedWeapon();
+
+        switch (result) {
+            case NO_WEAPON -> IO.println("You have no weapon equipped");
+            case NO_AMMO -> IO.println("You try to use " + weapon.getLongName() + ", but it is out of ammunition");
+            case NO_SUCH_ENEMY -> IO.println("There is no " + enemyName + " here to attack");
+            case ATTACKED_AIR -> {
+                // -1 betyder ubegrænset brug (nærkampsvåben), ellers er det skud tilbage.
+                if (weapon.getUsesLeft() == -1) {
+                    IO.println("You swing " + weapon.getLongName() + " at the empty air.");
+                } else {
+                    IO.println("You fire " + weapon.getLongName() + " into the empty air. " + weapon.getUsesLeft() + " shots left.");
+                }
+            }
+            case ENEMY_DIED -> {
+                IO.println("You hit " + target.getLongName() + " with " + weapon.getLongName() + " for " + weapon.getDamage() + " damage.");
+                IO.println("You defeated " + target.getLongName() + "! It dropped " + target.getWeapon().getLongName() + ".");
+            }
+            case ENEMY_HIT_BACK -> {
+                IO.println("You hit " + target.getLongName() + " with " + weapon.getLongName() + " for " + weapon.getDamage() + " damage.");
+                IO.println(target.getLongName() + " attacks you with " + target.getWeapon().getLongName() + " for " + target.getWeapon().getDamage() + " damage.");
             }
         }
     }
 }
-
 
 
 
