@@ -18,6 +18,11 @@ public class Adventure {
         return player.look();
     }
 
+    //Spørg spilleren om der er fjender i rummet, og sender svaret videre:
+    public boolean hasEnemies(){
+        return player.hasEnemies();
+    }
+
     // Beder spilleren om at gå. Adventure tjekker ikke selv noget,
     // den sender bare svaret (true/false) videre (Law of Demeter).
     public boolean goNorth() {

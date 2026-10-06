@@ -109,6 +109,9 @@ public class UserInterface { // Userinterface står for al kommunikation med bru
                 case "n", "north" -> {
                     if (adventure.goNorth()) {
                         IO.println("You moved north");
+                        if(adventure.hasEnemies()){
+                            IO.println("Beware! There are enemies here.");
+                        }
                     } else {
                         IO.println("You cannot go that way");
                     }
@@ -116,6 +119,9 @@ public class UserInterface { // Userinterface står for al kommunikation med bru
                 case "e", "east" -> {
                     if (adventure.goEast()) {
                         IO.println("You moved east");
+                        if(adventure.hasEnemies()){
+                            IO.println("Beware! There are enemies here.");
+                        }
                     } else {
                         IO.println("You cannot go that way");
                     }
@@ -124,6 +130,9 @@ public class UserInterface { // Userinterface står for al kommunikation med bru
                 case "s", "south" -> {
                     if (adventure.goSouth()) {
                         IO.println("You moved south");
+                        if(adventure.hasEnemies()){
+                            IO.println("Beware! There are enemies here.");
+                        }
                     } else {
                         IO.println("You cannot go that way");
                     }
@@ -132,6 +141,9 @@ public class UserInterface { // Userinterface står for al kommunikation med bru
                 case "w", "west" -> {
                     if (adventure.goWest()) {
                         IO.println("You moved west");
+                        if(adventure.hasEnemies()){
+                            IO.println("Beware! There are enemies here.");
+                        }
                     } else {
                         IO.println("You cannot go that way");
                     }

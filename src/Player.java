@@ -40,7 +40,21 @@ public class Player {
                 text.append("\n- ").append(item.getLongName());
             }
         }
+
+        // Vis fjender i rummet, hvis der er nogen
+        ArrayList<Enemy> enemies = currentRoom.getEnemies();
+        if (!enemies.isEmpty()) {
+            text.append("\nBeware! Here lurks:");
+            for (Enemy enemy : enemies) {
+                text.append("\n- ").append(enemy.getLongName());
+            }
+        }
         return text.toString();
+    }
+
+    // Returnerer true, hvis der er fjender i det rum, spilleren står i.
+    public boolean hasEnemies() {
+        return  !currentRoom.getEnemies().isEmpty();
     }
 
 
