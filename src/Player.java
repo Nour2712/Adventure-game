@@ -266,7 +266,7 @@ public class Player {
 
     // Finder den fjende der skal angribes:
     // hvis spilleren bare skriver "attack", vælges den første fjende i rummet eller (null, hvis rummet er tomt).
-    //hvis spilleren fx skriver "attack rat", så ledes der efter præcis den fjende (null, hvis den ikke er der).
+    //hvis spilleren fx skriver "attack rat", ledes der efter præcis den fjende (null, hvis den ikke er der).
     public Enemy findTarget(String enemyName) {
         if (enemyName.equals("")) {
             if (currentRoom.getEnemies().isEmpty()) {

@@ -11,7 +11,6 @@ public class Room {
     private Room west;
 
     // Listen over de ting, der ligger i rummet.
-    // Den oprettes tom med det samme, så den aldrig er null.
     private final ArrayList<Item> items = new ArrayList<>();
 
     //liste til fjender

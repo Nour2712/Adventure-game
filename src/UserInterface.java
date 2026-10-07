@@ -207,7 +207,7 @@ public class UserInterface { // Userinterface står for al kommunikation med bru
 
 
     // Udfører attack og skriver beskederne. Bruges både af "attack" og "attack fjende",
-    // så man skal ikke  skrive den samme kode to gange.
+    // så man skal ikke skrive den samme kode to gange.
     // Metoden er private, fordi det kun er UserInterface som bruger den.
     private void attack(String enemyName) {
         // Find fjenden FØR angrebet - dør den, forsvinder den fra rummet, og så kan vi ikke finde den bagefter.

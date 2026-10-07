@@ -1,6 +1,6 @@
 // Food arver fra Item (arv): Food er en subklasse, Item er superklassen.
 // Food får automatisk shortName, longName og deres getters fra Item.
-// Et Food-objekt ER også et Item (is-a), så det kan samles op og droppes som alle andre ting.
+// Et Food-objekt ER også et Item (is-a som Ian og Jakob snakkede om), så det kan samles op og droppes som alle andre ting.
 public class Food extends Item {
 
 
