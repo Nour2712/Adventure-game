@@ -3,8 +3,9 @@
 public class MeleeWeapon extends Weapon {
 
     // Konstruktør: sender navnene videre til Weapon med super(...), som sender dem videre til Item
-    public MeleeWeapon(String shortName, String longName) {
-        super(shortName, longName);
+    public MeleeWeapon(String shortName, String longName, int damage) {
+        super(shortName, longName, damage);
+
     }
 
 

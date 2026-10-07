@@ -11,9 +11,10 @@ public class Room {
     private Room west;
 
     // Listen over de ting, der ligger i rummet.
-    // Den oprettes tom med det samme, så den aldrig er null.
     private final ArrayList<Item> items = new ArrayList<>();
 
+    //liste til fjender
+    private final ArrayList<Enemy> enemies = new ArrayList<>();
 
     // Konstruktør: opretter et rum med navn og beskrivelse.
     // Naboerne er ikke med her, fordi alle rum skal findes, før man kan forbinde dem.
@@ -95,5 +96,43 @@ public class Room {
         }
         return null;
     }
+
+    // ----- Enemies -----
+    //addEnemy(Enemy enemy), lægger en fjende i listen
+    public void addEnemy(Enemy enemy) {
+        enemies.add(enemy);
+    }
+
+    //removeEnemy(Enemy enemy),fjerner en fjende fra listen
+    public void removeEnemy(Enemy enemy) {
+        enemies.remove(enemy);
+    }
+
+    //getEnemies(), returnerer listen
+    public ArrayList<Enemy> getEnemies() {
+        return enemies;
+    }
+
+    // Leder efter en fjende i rummet ud fra dens korte navn.
+    // Returnerer fjenden, hvis den findes, ellers null.
+    public Enemy findEnemy(String shortName) {
+        for (Enemy enemy : enemies) {
+            if (enemy.getShortName().equals(shortName)) {
+                return enemy;
+            }
+        }
+        return null;
+    }
+
+
+
+
+
+
+
+
+
+
+
 
 }

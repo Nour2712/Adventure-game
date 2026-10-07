@@ -3,10 +3,20 @@
 // Weapon arver fra Item, så våben kan samles op og droppes som alle andre ting.
 public abstract class Weapon extends Item {
 
+    // Hvor meget skade våbnet giver, når det rammer. Alle våben har damage,
+    // derfor ligger feltet her og ikke i subklasserne.
+    private int damage;
 
     // Konstruktør: sender navnene videre til Item med super(...), ligesom i Food.
-    public Weapon(String shortName, String longName) {
+    //og damage er Weapons eget ekstra felt.
+    public Weapon(String shortName, String longName, int damage) {
         super(shortName, longName);
+        this.damage = damage;
+    }
+
+    // Returnerer hvor meget skade våbnet giver.
+    public int getDamage(){
+        return damage;
     }
 
     // Kan våbnet bruges lige nu? Hver subklasse bestemmer selv svaret.
@@ -19,6 +29,10 @@ public abstract class Weapon extends Item {
 
     // Returnerer hvor mange gange våbnet kan bruges endnu. -1 betyder ubegrænset.
     public abstract int getUsesLeft();
+
+
+
+
 
 
 }
